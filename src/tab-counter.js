@@ -45,7 +45,7 @@ function tabCount(onTabCountUpdate,preventInitialFire){
         var listIds=Object.keys(data.list);
         var now=Date.now();
         listIds.forEach(function(id) {
-            if(data.list[id]+8000<now){//If tab last update is 8 seconds or older get rid of it.
+            if(data.list[id]+Math.max(8000,updateInterval*1.5)<now){//If tab last update is older get rid of it.
                 delete data.list[id];
             }
         });
