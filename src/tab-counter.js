@@ -25,7 +25,7 @@ function tabCount(onTabCountUpdate,preventInitialFire){
         var listIds=Object.keys(data.list);
         var now=Date.now();
         var count = 0;
-        listIds.forEach(id => {
+        listIds.forEach(function(id) {
             if(data.list[id]+updateInterval*1.2>now){
                 count++;
             }
@@ -44,7 +44,7 @@ function tabCount(onTabCountUpdate,preventInitialFire){
         var data=getData();
         var listIds=Object.keys(data.list);
         var now=Date.now();
-        listIds.forEach(id => {
+        listIds.forEach(function(id) {
             if(data.list[id]+8000<now){//If tab last update is 8 seconds or older get rid of it.
                 delete data.list[id];
             }
@@ -58,10 +58,10 @@ function tabCount(onTabCountUpdate,preventInitialFire){
         savedData = localStorage.getItem('tabCountData');
         return savedData== null ?{list:{}}:JSON.parse(savedData);
     }
-    var updateActiveInterval = setInterval(() => {
+    var updateActiveInterval = setInterval(function(){
         updateActive();
     }, updateInterval);
-    var clearListInterval = setInterval(() => {
+    var clearListInterval = setInterval(function(){
         clearList();
     }, 20000);
     
@@ -70,7 +70,7 @@ function tabCount(onTabCountUpdate,preventInitialFire){
      */
     updateActive();
     this.onTabCountUpdate = onTabCountUpdate;
-    if(!preventInitialFire){
+    if(!preventInitialFire && undefined !== this.onTabCountUpdate){
         this.onTabCountUpdate(tabsCount);
     }
     window.onbeforeunload=function(e){
