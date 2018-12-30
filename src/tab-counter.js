@@ -12,8 +12,12 @@ function tabCount(onTabCountUpdate,preventInitialFire){
     var self = this;
     var tabsCount = 0;
     var updateActive = function(){
-        var data = getData();
-        data.list[tabId]=Date.now();
+        var data = getData(),
+        now = Date.now();
+        data.list[tabId]=now;
+        if(undefined===data.lastCleaned || Number(data.lastCleaned) + 20000 < now){
+            data = clearList(data);
+        }
         updateData(data);
         if(self.onTabCountUpdate!==undefined || tabsCount===0){
             self.tabsCount(false);
@@ -40,8 +44,7 @@ function tabCount(onTabCountUpdate,preventInitialFire){
     /**
      * Cleans data of closed tabs
      */
-    var clearList = function(){
-        var data=getData();
+    var clearList = function(data){
         var listIds=Object.keys(data.list);
         var now=Date.now();
         listIds.forEach(function(id) {
@@ -49,7 +52,9 @@ function tabCount(onTabCountUpdate,preventInitialFire){
                 delete data.list[id];
             }
         });
-        updateData(data);
+        data.lastCleaned=now;
+        return data;
+        
     }
     var updateData = function(data){
         localStorage.setItem('tabCountData',typeof(data)==="string"?data:JSON.stringify(data));
@@ -61,9 +66,6 @@ function tabCount(onTabCountUpdate,preventInitialFire){
     var updateActiveInterval = setInterval(function(){
         updateActive();
     }, updateInterval);
-    var clearListInterval = setInterval(function(){
-        clearList();
-    }, 20000);
     
     /**
      * Initialise 
