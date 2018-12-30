@@ -39,11 +39,10 @@
             <span class="count"></span>
     </div>
     <script>
-        var titleText = " Tabs opened.";
-        tabs = new tabCount(function(count){
+        tabCount.onTabChange(function(count){
             $(".count").html(count);
-            $('title').text(count+titleText);
-        });
+            $('title').text(count+" Tabs opened.");
+        },true);
     </script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-function tabCount(onTabCountUpdate,preventInitialFire){
+var tabCount = (function(){
     /**
      * @updateInterval: interval in milli seconds to count/update active tabs status.
      * minimum value: 1000
@@ -8,9 +8,9 @@ function tabCount(onTabCountUpdate,preventInitialFire){
      * @TabId: unique id for this tab.
      */
     var tabId = Math.random().toString(36).substring(7);
-    preventInitialFire = preventInitialFire===undefined?false:preventInitialFire;
     var self = this;
-    var tabsCount = 0;
+    var tabsCounter = 0;
+    this.onTabCountUpdate = [];
     var updateActive = function(){
         var data = getData(),
         now = Date.now();
@@ -19,11 +19,9 @@ function tabCount(onTabCountUpdate,preventInitialFire){
             data = clearList(data);
         }
         updateData(data);
-        if(self.onTabCountUpdate!==undefined || tabsCount===0){
-            self.tabsCount(false);
-        }
+        tabsCount(false);
     }
-    self.tabsCount = function(skipCallback){
+    tabsCount = function(skipCallback){
         skipCallback = skipCallback===undefined?true:skipCallback;
         var data=getData();
         var listIds=Object.keys(data.list);
@@ -34,12 +32,12 @@ function tabCount(onTabCountUpdate,preventInitialFire){
                 count++;
             }
         });
-        if(!skipCallback && tabsCount !== count){
-            if(self.onTabCountUpdate !==undefined){
-                onTabCountUpdate(count);
-            }       
+        if(!skipCallback && tabsCounter !== count){
+            onTabCountUpdate.forEach(function(event) {
+                event(count);
+            });
         }
-        return tabsCount = count;
+        return tabsCounter = count;
     }
     /**
      * Cleans data of closed tabs
@@ -56,6 +54,20 @@ function tabCount(onTabCountUpdate,preventInitialFire){
         return data;
         
     }
+    /**
+     * 
+     * @param {function} callback 
+     * @param {boolean} executeNow => optional, to execute the callback immediatly with current tab count.
+     */
+    var onTabChange = function(callback,executeNow){
+        executeNow = executeNow === undefined ? false : executeNow;
+        if(typeof callback==="function"){
+            onTabCountUpdate.push(callback);
+            if(executeNow){
+                callback(tabsCount(true));
+            }
+        }
+    }
     var updateData = function(data){
         localStorage.setItem('tabCountData',typeof(data)==="string"?data:JSON.stringify(data));
     }
@@ -71,16 +83,13 @@ function tabCount(onTabCountUpdate,preventInitialFire){
      * Initialise 
      */
     updateActive();
-    this.onTabCountUpdate = onTabCountUpdate;
-    if(!preventInitialFire && undefined !== this.onTabCountUpdate){
-        this.onTabCountUpdate(tabsCount);
-    }
     window.onbeforeunload=function(e){
         var data = getData();
         delete data.list[tabId];
         updateData(data);
     }
     return {
-        tabsCount:self.tabsCount
+        tabsCount:tabsCount,
+        onTabChange:onTabChange
     };
-}
+})();
