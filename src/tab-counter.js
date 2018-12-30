@@ -21,8 +21,8 @@ var tabCount = (function(){
         updateData(data);
         tabsCount(false);
     }
-    tabsCount = function(skipCallback){
-        skipCallback = skipCallback===undefined?true:skipCallback;
+    var tabsCount = function(skipCallback){
+        skipCallback = skipCallback === undefined ? true : skipCallback;
         var data=getData();
         var listIds=Object.keys(data.list);
         var now=Date.now();
@@ -64,7 +64,7 @@ var tabCount = (function(){
         if(typeof callback==="function"){
             onTabCountUpdate.push(callback);
             if(executeNow){
-                callback(tabsCount(true));
+                callback(tabsCount());
             }
         }
     }
@@ -75,14 +75,22 @@ var tabCount = (function(){
         savedData = localStorage.getItem('tabCountData');
         return savedData== null ?{list:{}}:JSON.parse(savedData);
     }
-    var updateActiveInterval = setInterval(function(){
-        updateActive();
-    }, updateInterval);
+    var updateActiveInterval;
+    var setUpdateInterval = function(interval){
+        interval = interval === undefined || isNaN(interval) ||  interval<1000 ? updateInterval:interval;
+        if(undefined !== updateActiveInterval){
+            clearInterval(updateActiveInterval);
+        }
+        updateActiveInterval = setInterval(function(){
+            updateActive();
+        }, updateInterval = interval);
+    }
     
     /**
      * Initialise 
      */
     updateActive();
+    setUpdateInterval();
     window.onbeforeunload=function(e){
         var data = getData();
         delete data.list[tabId];
@@ -90,6 +98,7 @@ var tabCount = (function(){
     }
     return {
         tabsCount:tabsCount,
-        onTabChange:onTabChange
+        onTabChange:onTabChange,
+        setUpdateInterval:setUpdateInterval
     };
 })();

@@ -8,9 +8,11 @@ Include [tab-counter.js](src/tab-counter.js) in your page.
 ```javascript
 console.log(tabCount.tabsCount());
 ```
-you can also set a tabCount change event by passing a callback function to `tabCount.onTabChange` which will be triggered each time number of tab changes for a working example check out this [demo](demo/count.html).
+you can also set tabCount change events by passing callback function to `tabCount.onTabChange` which will be triggered each time number of tab changes for a working example check out this [demo](demo/count.html), `tabCount.onTabChange` also has a second optional parameter which accepts a boolean value to execute callBack immediatly, default is set to `false`. 
+
 ##### Configuration:
-Tabcounter internally runs a *TimeInterval* internally to track opened number of tabs, default interval is set to **2000ms** (2 seconds) which can be modified by updating value of variable `updateInterval`.
+
+Tabcounter internally runs a *TimeInterval* internally to track opened number of tabs, default interval is set to **2000ms** (2 seconds) which can configured by function `tabCount.updateActiveInterval`.
 
 ## License
 
