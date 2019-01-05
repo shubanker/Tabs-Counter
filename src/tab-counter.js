@@ -10,7 +10,7 @@ var tabCount = (function(){
     var tabId = Math.random().toString(36).substring(7);
     var self = this;
     var tabsCounter = 0;
-    this.onTabCountUpdate = [];
+    var onTabCountUpdate = [];
     var updateActive = function(){
         var data = getData(),
         now = Date.now();
@@ -72,7 +72,7 @@ var tabCount = (function(){
         localStorage.setItem('tabCountData',typeof(data)==="string"?data:JSON.stringify(data));
     }
     var getData = function(){
-        savedData = localStorage.getItem('tabCountData');
+        var savedData = localStorage.getItem('tabCountData');
         return savedData== null ?{list:{}}:JSON.parse(savedData);
     }
     var updateActiveInterval;
