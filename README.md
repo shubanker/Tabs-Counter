@@ -12,8 +12,11 @@ you can also set tabCount change events by passing callback function to `tabCoun
 
 ##### Configuration:
 
-Tabcounter internally runs a *TimeInterval* internally to track opened number of tabs, default interval is set to **2000ms** (2 seconds) which can configured by function `tabCount.updateActiveInterval`.
+Tabcounter runs a *TimeInterval* internally to track change in number of tabs, default interval is set to **2000ms** (2 seconds) which can configured by function `tabCount.updateActiveInterval`.
 
+##### Limitations:
+
+Browses tend to throttle *TimeIntervals* of inactive tabs especially if timer is less than *1000ms(1s)*, thus the counter may fail to give precious count, workaround on this is WebWorkers, for more precious count include a  WebWorker library such as [this](https://github.com/myonov/momentum) before loading Tab counter.
 
 ## License
 
