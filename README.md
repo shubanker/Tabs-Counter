@@ -8,7 +8,7 @@ Include [tab-counter.js](src/tab-counter.js) in your page.
 ```javascript
 console.log(tabCount.tabsCount());
 ```
-you can also set tabCount change events by passing callback function to `tabCount.onTabChange` which will be triggered each time number of tab changes, check out this [example](demo/count.html), you can also see it working [here](https://htmlpreview.github.io/?https://github.com/shubanker/Tabs-Counter/blob/master/demo/count.html), `tabCount.onTabChange` also has a second optional parameter which accepts a boolean value to execute callBack immediatly, default is set to `false`. 
+you can also set tabCount change events by passing callback function to `tabCount.onTabChange` which will be triggered each time number of tab changes, check out this [example](demo/count.html), you can also see it working [here](https://output.jsbin.com/qodejup), `tabCount.onTabChange` also has a second optional parameter which accepts a boolean value to execute callBack immediatly, default is set to `false`. 
 
 ##### Configuration:
 
