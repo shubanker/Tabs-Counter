@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/gh/myonov/momentum/momentum.min.js"></script>
+    <script src="../src/tab-counter.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+        body{
+            background-color: #22295f;
+            color: white;
+            font-family: cursive;
+        }
+        .container{
+            margin-left: auto;
+            margin-right: auto;
+            background-color: #1a1f48;
+            border-radius: 5px;
+            max-width: 70%;
+            text-align: center;
+            margin-top: 5em;
+        }
+        .container h1{
+            margin: 0.5em 0 0;
+        font-size: 3em;
+        font-weight: normal;
+        line-height: 1;
+        }
+        .container .count{
+            font-size: 18em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+            <h1>Number of Active Tabs</h1>
+            <span class="count"></span>
+    </div>
+    <script>
+        tabCount.onTabChange(function(count){
+            $(".count").html(count);
+            $('title').text(count+" Tabs opened.");
+        },true);
+    </script>
+</body>
+</html>

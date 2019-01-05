@@ -16,7 +16,7 @@ Tabcounter runs a *TimeInterval* internally to track change in number of tabs, d
 
 ##### Limitations:
 
-Browses tend to throttle *TimeIntervals* of inactive tabs especially if timer is less than *1000ms(1s)*, thus the counter may fail to give precious count, workaround on this is WebWorkers, for more precious count include a  WebWorker library such as [this](https://github.com/myonov/momentum) before loading Tab counter.
+Browses tend to throttle *TimeIntervals* of inactive tabs especially if timer is less than *1000ms(1s)*, espically for mobile browsers, thus the counter may fail to give precious count, workaround on this is WebWorkers, for more precious count include a  WebWorker library such as [this](https://github.com/myonov/momentum) before loading Tab counter [example](demo/count.webworkers.html).
 
 ## License
 
