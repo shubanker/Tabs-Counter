@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title></title>
     <script src="../src/tab-counter.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <style>
         body{
             background-color: #22295f;
@@ -35,13 +34,13 @@
 </head>
 <body>
     <div class="container">
-            <h1>Number of Active Tabs</h1>
-            <span class="count"></span>
+        <h1>Number of Active Tabs</h1>
+        <span class="count"></span>
     </div>
     <script>
         tabCount.onTabChange(function(count){
-            $(".count").html(count);
-            $('title').text(count+" Tabs opened.");
+            document.querySelector(".count").innerText=count;
+            document.querySelector("title").innerText=count + " Tabs opened.";
         },true);
     </script>
 </body>
