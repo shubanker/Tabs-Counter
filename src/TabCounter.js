@@ -107,6 +107,12 @@ var TabCount = /** @class */ (function () {
             clearInterval(_this.updateActiveInterval);
             _this.updateActiveInterval = 0;
         };
+        this.start = function (interval) {
+            if (interval === void 0) { interval = _this.updateInterval; }
+            _this.updateActiveInterval = setInterval(function () {
+                _this.updateActive();
+            }, _this.updateInterval = interval);
+        };
         /**
          * Initialise
          */
@@ -118,13 +124,6 @@ var TabCount = /** @class */ (function () {
             _this.updateData(data);
         };
     }
-    TabCount.prototype.start = function (interval) {
-        var _this = this;
-        if (interval === void 0) { interval = this.updateInterval; }
-        this.updateActiveInterval = setInterval(function () {
-            _this.updateActive();
-        }, this.updateInterval = interval);
-    };
     return TabCount;
 }());
 var tabCount = new TabCount();

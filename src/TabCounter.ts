@@ -119,7 +119,7 @@ class TabCount{
         clearInterval(this.updateActiveInterval);
         this.updateActiveInterval = 0;
     }
-    start(interval:number=this.updateInterval){
+    start = (interval:number=this.updateInterval)=>{
         this.updateActiveInterval = setInterval(()=>{
             this.updateActive();
         }, this.updateInterval = interval);
