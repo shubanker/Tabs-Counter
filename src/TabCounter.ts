@@ -20,7 +20,7 @@ class TabCount{
         this.updateActive();
         this.start();
         
-        window.onbeforeunload=e=>{
+        window.onbeforeunload = e=> {
             let data = this.getData();
             delete data.list[this.tabId];
             this.updateData(data);
@@ -32,7 +32,7 @@ class TabCount{
         let now = Date.now();
         let count = 0;
         listIds.forEach(id => {
-            if(data.list[id] + this.updateInterval *1.2 > now){
+            if(data.list[id].lastActive + this.updateInterval *1.2 > now){
                 count++;
             }
         });
@@ -46,7 +46,14 @@ class TabCount{
     updateActive = ()=> {
         var data = this.getData(),
         now = Date.now();
-        data.list[this.tabId]=now;
+        if(data.list[this.tabId]===undefined){
+            data.list[this.tabId]={
+                TabOpenedTimeStamp : now
+            };
+        }
+        data.list[this.tabId].url = window.location.href;
+        data.list[this.tabId].lastActive = now;
+        
         if(undefined === data.lastCleaned || +data.lastCleaned + 20000 < now){
             data = this.clearList(data);
         }
@@ -60,7 +67,7 @@ class TabCount{
         var listIds=Object.keys(data.list);
         var now=Date.now();
         listIds.forEach((id)=> {
-            if(data.list[id] + Math.max(8000,this.updateInterval * 1.5) < now){//If tab last update is older get rid of it.
+            if(data.list[id].lastActive + Math.max(8000,this.updateInterval * 1.5) < now){//If tab last update is older get rid of it.
                 delete data.list[id];
             }
         });
@@ -86,6 +93,21 @@ class TabCount{
     getData = ():{list:object,lastCleaned:number}=>{
         let savedData = localStorage.getItem('tabCountData');
         return savedData == null ? {list:{},lastCleaned:0} : JSON.parse(savedData);
+    }
+    
+    /**
+     * Get list of urls of opened tabs.
+     * @param {boolean} getUnique =>get list of unique urls.
+     */
+    getUrls = (getUnique:boolean = false):string[]=>{
+        let data = this.getData();
+        let urlList=[];
+        Object.keys(data.list).forEach(lt=>{
+            if(!getUnique || urlList.indexOf(data.list[lt].url)===-1){
+                urlList.push(data.list[lt].url);
+            }
+        });
+        return urlList;
     }
     setUpdateInterval = (interval:number=this.updateInterval)=>{
         if(null !== this.updateActiveInterval){

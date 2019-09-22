@@ -20,7 +20,7 @@ var TabCount = /** @class */ (function () {
             var now = Date.now();
             var count = 0;
             listIds.forEach(function (id) {
-                if (data.list[id] + _this.updateInterval * 1.2 > now) {
+                if (data.list[id].lastActive + _this.updateInterval * 1.2 > now) {
                     count++;
                 }
             });
@@ -33,7 +33,13 @@ var TabCount = /** @class */ (function () {
         };
         this.updateActive = function () {
             var data = _this.getData(), now = Date.now();
-            data.list[_this.tabId] = now;
+            if (data.list[_this.tabId] === undefined) {
+                data.list[_this.tabId] = {
+                    TabOpenedTimeStamp: now
+                };
+            }
+            data.list[_this.tabId].url = window.location.href;
+            data.list[_this.tabId].lastActive = now;
             if (undefined === data.lastCleaned || +data.lastCleaned + 20000 < now) {
                 data = _this.clearList(data);
             }
@@ -47,7 +53,7 @@ var TabCount = /** @class */ (function () {
             var listIds = Object.keys(data.list);
             var now = Date.now();
             listIds.forEach(function (id) {
-                if (data.list[id] + Math.max(8000, _this.updateInterval * 1.5) < now) { //If tab last update is older get rid of it.
+                if (data.list[id].lastActive + Math.max(8000, _this.updateInterval * 1.5) < now) { //If tab last update is older get rid of it.
                     delete data.list[id];
                 }
             });
@@ -74,6 +80,21 @@ var TabCount = /** @class */ (function () {
         this.getData = function () {
             var savedData = localStorage.getItem('tabCountData');
             return savedData == null ? { list: {}, lastCleaned: 0 } : JSON.parse(savedData);
+        };
+        /**
+         * Get list of urls of opened tabs.
+         * @param {boolean} getUnique =>get list of unique urls.
+         */
+        this.getUrls = function (getUnique) {
+            if (getUnique === void 0) { getUnique = false; }
+            var data = _this.getData();
+            var urlList = [];
+            Object.keys(data.list).forEach(function (lt) {
+                if (!getUnique || urlList.indexOf(data.list[lt].url) === -1) {
+                    urlList.push(data.list[lt].url);
+                }
+            });
+            return urlList;
         };
         this.setUpdateInterval = function (interval) {
             if (interval === void 0) { interval = _this.updateInterval; }
