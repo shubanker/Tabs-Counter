@@ -4,7 +4,7 @@ Track the number of Tabs a user has currently opened of your website.
 
 ## Getting Started
 
-Include [tab-counter.js](src/tab-counter.js) in your page.
+Include [TabCounter.js](src/TabCounter.js) in your page.
 ```javascript
 console.log(tabCount.tabsCount());
 ```
